@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import AddSubscriber from "./AddSubscriber";
 import ShowSubscribers from "./ShowSubscribers";
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import { useState } from "react";
 import Footer from "./Footer";
 import {SubscriberCountContext} from "./SubscriberCountContext";
 
@@ -19,25 +18,35 @@ export default function PhoneDirectory() {
          loadData();
     }, [])
 
-    async function deleteSubscriberHandler(subscriberId) {
+
+    const deleteSubscriberHandler = useCallback(async (subscriberId)=>{
         const rawResponse = await fetch("http://localhost:7081/api/contacts/" + subscriberId, {method : "DELETE"})
         const data = await rawResponse.json();
         loadData();
-        // const newSubscribers = subscribersList.filter((subscriber) => subscriber.id !== subscriberId);
-        // setSubscribersList(newSubscribers);
+    }, [subscribersList])
+    // async function deleteSubscriberHandler(subscriberId) {
+    //     const rawResponse = await fetch("http://localhost:7081/api/contacts/" + subscriberId, {method : "DELETE"})
+    //     const data = await rawResponse.json();
+    //     loadData();
+    //     // const newSubscribers = subscribersList.filter((subscriber) => subscriber.id !== subscriberId);
+    //     // setSubscribersList(newSubscribers);
         
-    }
+    // }
+
+    const numberOfSubscribers = useMemo(()=>{
+        return subscribersList.length
+    }, [subscribersList])
 
    async function addSubscriberHandler(newSubscriber) {
-       const rawResponse = await fetch("http://localhost:7081/api/contacts" , 
+       const rawResponse = await fetch("http://localhost:7081/api/contacts", 
        {
-            method:"POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body : JSON.stringify(newSubscriber)
-        }
-        );
+        method:"POST",
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify(newSubscriber)
+    }
+    );
         const data = await rawResponse.json();
         loadData();
 
@@ -59,7 +68,7 @@ export default function PhoneDirectory() {
                 <Route path='/add' element={<AddSubscriber addSubscriberHandler={(newSubscriber) => addSubscriberHandler(newSubscriber)} />} />
             </Routes>
         </Router>
-            <SubscriberCountContext.Provider value={subscribersList.length}>
+            <SubscriberCountContext.Provider value={numberOfSubscribers}>
                 <Footer />
             </SubscriberCountContext.Provider>
 

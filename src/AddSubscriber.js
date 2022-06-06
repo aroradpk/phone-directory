@@ -7,7 +7,7 @@ import { TextField } from "@mui/material";
 
 export default function AddSubscriber({addSubscriberHandler}) {
     const [addSubscriberForm, setAddSubscriberForm] = useState({
-        id: '0',
+        sNo: '0',
         name: '',
         phone: ''
     })
@@ -24,7 +24,7 @@ export default function AddSubscriber({addSubscriberHandler}) {
     const onFormSubmitted = (e) => {
         e.preventDefault();
         addSubscriberHandler(addSubscriberForm);
-        setAddSubscriberForm({ id: 0, name: '', phone: '' });
+        setAddSubscriberForm({ sNo: 0, name: '', phone: '' });
         history('/');
         
     }
