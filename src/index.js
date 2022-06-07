@@ -4,11 +4,13 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import "./common/common.css";
 import PhoneDirectory from './PhoneDirectory';
+import { Provider } from 'react-redux';
+import store from './subscriber-store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <PhoneDirectory />
+    <Provider store={store}><PhoneDirectory /></Provider>
   </React.StrictMode>
 );
 

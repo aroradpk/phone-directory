@@ -2,9 +2,12 @@ import React, { Component, useEffect } from 'react';
 import Header from './Header';
 import './ShowSubscribers.css'
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 
-export default function ShowSubscribers({ subscribersList, deleteSubscriberHandler }) {
+export default function ShowSubscribers({ deleteSubscriberHandler }) {
+
+ const subscribersList= useSelector(state=> state.subscribers)
   useEffect(() => {
     if(subscribersList && subscribersList.length)
     document.title = "Phone Directory - Number of Subscribers " + subscribersList.length
